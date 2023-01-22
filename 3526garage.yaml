@@ -34,9 +34,10 @@ web_server:
 
 switch:
   - platform: template
-    name: "Virtual Lock"
-    id: virtual_lock
+    name: "Garage Lock"
+    id: garage_virtual_lock
     optimistic: true
+
   - platform: gpio
     pin: D5
     name: "Door relay"
@@ -51,6 +52,7 @@ binary_sensor:
     name: "Garage Door Is Jammed"
     id: is_jammed
     device_class: problem
+
   - platform: template
     name: "Garage Door Is Open"
     id: is_open
@@ -92,6 +94,7 @@ binary_sensor:
             - binary_sensor.template.publish:
                 id: is_jammed
                 state: ON
+                
   - platform: gpio
     pin:
       number: D2
@@ -137,7 +140,7 @@ cover:
       - if:
           condition:
             - and:
-                - switch.is_off: virtual_lock
+                - switch.is_off: garage_virtual_lock
                 - binary_sensor.is_on: close_endstop_binary_sensor
           then:
             - switch.turn_on: door_relay
@@ -145,7 +148,7 @@ cover:
       - if:
           condition:
             - and:
-                - switch.is_off: virtual_lock
+                - switch.is_off: garage_virtual_lock
                 - binary_sensor.is_on: open_endstop_binary_sensor
           then:
             - switch.turn_on: door_relay
@@ -153,7 +156,7 @@ cover:
       - if:
           condition:
             - and:
-                - switch.is_off: virtual_lock
+                - switch.is_off: garage_virtual_lock
                 - binary_sensor.is_off: close_endstop_binary_sensor
                 - binary_sensor.is_off: open_endstop_binary_sensor
           then:
