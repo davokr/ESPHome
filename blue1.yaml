@@ -1,0 +1,36 @@
+esphome:
+  name: "blue1"
+
+esp32:
+  board: wemos_d1_mini32
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "6WHQP6JbWAvDPnstJ37r54EUAkPmVNg0MAVtSSnjYqk="
+
+ota:
+  password: "8c543520be3392a7bcbee1fc7fd713dd"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "3526Garage Fallback Hotspot"
+    password: !secret hotspot_wifi_password
+
+esp32_ble_tracker:
+  scan_parameters:
+    interval: 1100ms
+    window: 1100ms
+    active: true
+
+bluetooth_proxy:
+  active: true
