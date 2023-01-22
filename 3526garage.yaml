@@ -25,7 +25,7 @@ wifi:
     password: !secret hotspot_wifi_password
 
 captive_portal:
-    
+
 web_server:
   port: 80
   auth:
@@ -48,10 +48,10 @@ switch:
       - switch.turn_off: door_relay
 
 binary_sensor:
-  - platform: template
-    name: "Garage Door Is Jammed"
-    id: is_jammed
-    device_class: problem
+  # - platform: template
+  #   name: "Garage Door Is Jammed"
+  #   id: is_jammed
+  #   device_class: problem
 
   - platform: template
     name: "Garage Door Is Open"
@@ -73,9 +73,9 @@ binary_sensor:
           id: garage_door
           state: CLOSED
           current_operation: IDLE
-      - binary_sensor.template.publish:
-          id: is_jammed
-          state: OFF
+      # - binary_sensor.template.publish:
+      #     id: is_jammed
+      #     state: OFF
       - binary_sensor.template.publish:
           id: is_open
           state: OFF
@@ -87,44 +87,48 @@ binary_sensor:
           id: is_open
           state: ON
       - delay: 25s
-      - if:
-          condition:
-            binary_sensor.is_off: open_endstop_binary_sensor
-          then:
-            - binary_sensor.template.publish:
-                id: is_jammed
-                state: ON
-                
-  - platform: gpio
-    pin:
-      number: D2
-      inverted: true
-      mode:
-        input: true
-        pullup: true
-    name: "Garage Door Open Sensor"
-    id: open_endstop_binary_sensor
-    internal: true
-    on_press:
+      # - if:
+      #     condition:
+      #       binary_sensor.is_off: open_endstop_binary_sensor
+      #     then:
+      #       - binary_sensor.template.publish:
+      #           id: is_jammed
+      #           state: ON
       - cover.template.publish:
           id: garage_door
           state: OPEN
           current_operation: IDLE
-      - binary_sensor.template.publish:
-          id: is_jammed
-          state: OFF
-    on_release:
-      - cover.template.publish:
-          id: garage_door
-          current_operation: CLOSING
-      - delay: 25s
-      - if:
-          condition:
-            binary_sensor.is_off: close_endstop_binary_sensor
-          then:
-            - binary_sensor.template.publish:
-                id: is_jammed
-                state: ON
+
+  # - platform: gpio
+  #   pin:
+  #     number: D2
+  #     inverted: true
+  #     mode:
+  #       input: true
+  #       pullup: true
+  #   name: "Garage Door Open Sensor"
+  #   id: open_endstop_binary_sensor
+  #   internal: true
+  #   on_press:
+  #     - cover.template.publish:
+  #         id: garage_door
+  #         state: OPEN
+  #         current_operation: IDLE
+  #     - binary_sensor.template.publish:
+  #         id: is_jammed
+  #         state: OFF
+  #   on_release:
+  #     - cover.template.publish:
+  #         id: garage_door
+  #         current_operation: CLOSING
+  #     - delay: 25s
+  #     - if:
+  #         condition:
+  #           binary_sensor.is_off: close_endstop_binary_sensor
+  #         then:
+  #           - binary_sensor.template.publish:
+  #               id: is_jammed
+  #               state: ON
 
 sensor:
   - platform: wifi_signal
@@ -149,7 +153,8 @@ cover:
           condition:
             - and:
                 - switch.is_off: garage_virtual_lock
-                - binary_sensor.is_on: open_endstop_binary_sensor
+                # - binary_sensor.is_on: open_endstop_binary_sensor
+                - binary_sensor.is_off: close_endstop_binary_sensor
           then:
             - switch.turn_on: door_relay
     stop_action:
@@ -158,6 +163,6 @@ cover:
             - and:
                 - switch.is_off: garage_virtual_lock
                 - binary_sensor.is_off: close_endstop_binary_sensor
-                - binary_sensor.is_off: open_endstop_binary_sensor
+                # - binary_sensor.is_off: open_endstop_binary_sensor
           then:
             - switch.turn_on: door_relay
