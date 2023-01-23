@@ -159,6 +159,8 @@ cover:
             - cover.template.publish:
                 id: garage_door
                 current_operation: CLOSING
+            - button.press: garage_command
+            - delay: 10s
             - switch.turn_on: door_relay
     stop_action:
       - if:
@@ -169,3 +171,10 @@ cover:
                 # - binary_sensor.is_off: open_endstop_binary_sensor
           then:
             - switch.turn_on: door_relay
+
+button:
+  - platform: template
+    name: "Garage Door Button"
+    id: garage_command
+    on_press:
+      - logger.log: Button Pressed
