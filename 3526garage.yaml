@@ -156,6 +156,9 @@ cover:
                 # - binary_sensor.is_on: open_endstop_binary_sensor
                 - binary_sensor.is_off: close_endstop_binary_sensor
           then:
+            - cover.template.publish:
+                id: garage_door
+                current_operation: CLOSING
             - switch.turn_on: door_relay
     stop_action:
       - if:
