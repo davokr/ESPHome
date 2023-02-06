@@ -385,7 +385,7 @@ static std::map<std::string, std::string> allBots = {
 /* Switchbot Curtain Settings */
 static const int curtainClosedPosition = 10;    // When 2 curtains are controlled (left -> right and right -> left) it's possible one of the curtains pushes one of the switchbots more open. Change this value to set a position where a curtain is still considered closed
 static std::map<std::string, std::string> allCurtains = {
-  /*{ "curtainone", "xX:xX:xX:xX:xX:xX" },
+  { "officecurtain", "E8:95:66:A4:01:C6" }/*,
     { "curtaintwo", "yY:yY:yY:yY:yY:yY" }*/
 };
 
